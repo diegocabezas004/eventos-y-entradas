@@ -18,8 +18,8 @@ class TicketFactory extends Factory
     {
         return [
             'ticket_unique_code' => $this->fake()->unique()->randomNumber(8),
-            'purchase_date' => $this->faker()->dateTime()
-            'checked_in' => $this->faker()->boolean(),,
+            'purchase_date' => $this->faker()->dateTime(),
+            'checked_in' => $this->faker()->boolean(),
 
         ];
     }
