@@ -17,7 +17,7 @@ class AttendanceFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'check_in_time' => fake()->dateTimeThisYear(),
         ];
     }
 }
