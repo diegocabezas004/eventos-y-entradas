@@ -17,9 +17,9 @@ class TicketFactory extends Factory
     public function definition(): array
     {
         return [
-            'ticket_unique_code' => $this->fake()->unique()->randomNumber(8),
-            'purchase_date' => $this->faker()->dateTime(),
-            'checked_in' => $this->faker()->boolean(),
+            'ticket_unique_code' => fake() -> unique() -> numerify('TKT########'),
+            'purchase_date' => fake() -> dateTimeBetween('-1 year', 'now'),
+            'checked_in' => fake() -> boolean(),
 
         ];
     }

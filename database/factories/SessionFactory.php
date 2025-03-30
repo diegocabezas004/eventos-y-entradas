@@ -16,8 +16,16 @@ class SessionFactory extends Factory
      */
     public function definition(): array
     {
+        $startTime = fake()->dateTimeBetween('+1 week', '+1 month');
+        $endTime = clone $startTime;
+        $endTime->modify('+' . rand(30, 180) . ' minutes');
+
         return [
-            //
-        ];
+            'name' => fake() -> sentence(3),
+            'start_time' => $startTime,
+            'end_time' => $endTime,
+            'location' => fake() -> streetAddress(),
+ 
+         ];
     }
 }
