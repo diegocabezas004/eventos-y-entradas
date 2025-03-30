@@ -16,12 +16,15 @@ class TicketTypeFactory extends Factory
      */
     public function definition(): array
     {
+        $salesStart = fake()->dateTimeBetween('-1 month', '+1 month');
+        $salesEnd = fake()->dateTimeBetween($salesStart, '+6 months');
+
         return [
-            'name' => $this->fake()->name(),
-            'price' => $this->fake()->randomFloat(2, 200),
-            'quantity_available' => $this->fake()->randomNumber(2, 100),
-            'sales_start' => $this->fake()->dateTime(),
-            'sales_end' => $this->fake()->dateTime(),
+            'name' => fake()->words(),
+            'price' => fake()->randomFloat(2, 10, 500),
+            'quantity_available' => fake()->numberBetween(50, 1000),
+            'sales_start' => $salesStart,
+            'sales_end' => $salesEnd
         ];
     }
 }
