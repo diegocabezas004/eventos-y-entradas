@@ -17,6 +17,19 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+
+    public function roles(){
+        return $this->belongsTo(Role::class);
+    }
+
+    public function organizations(){
+        return $this->belongsTo(Organization::class);
+    }
+
+    public function attendancee(){
+        return $this->hasMany(Attendance::class);
+    }
+
     protected $fillable = [
         'name',
         'email',

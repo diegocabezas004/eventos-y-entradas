@@ -9,7 +9,7 @@ class Event_Category extends Model
 {
     /** @use HasFactory<\Database\Factories\EventCategoryFactory> */
     use HasFactory;
-    protected $fillable = [
+        protected $fillable = [
         'category'
     ];
 }

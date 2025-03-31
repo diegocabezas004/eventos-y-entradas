@@ -10,6 +10,10 @@ class Ticket_Type extends Model
     /** @use HasFactory<\Database\Factories\TicketTypeFactory> */
     use HasFactory;
 
+    public function ticket(){
+        return $this->hasMany(Ticket::class);
+    }
+
     protected $fillable = [
         'event_id',
         'name',
