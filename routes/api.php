@@ -1,42 +1,57 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EventCategoryController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\UserController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 
-// Ruta base para obtener el usuario autenticado (fuera del prefijo)
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::prefix('v1')->group(function () {
+
+    // Authentication routes
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/logout', [AuthController::class, 'logout'])
+        ->middleware('auth:sanctum');
+
+    // Event routes
+    Route::get('/events', [EventController::class, 'index']);
+    Route::get('/events/{id}', [EventController::class, 'show']);
+    Route::post('/events', [EventController::class, 'store'])
+        ->middleware('auth:sanctum');
+    Route::put('/events/{id}', [EventController::class, 'update'])
+        ->middleware('auth:sanctum');
+    Route::delete('/events/{id}', [EventController::class, 'destroy'])
+        ->middleware('auth:sanctum');
+
+    // Event category routes
+    Route::get('/categories', [EventCategoryController::class, 'index']);
+    Route::post('/categories', [EventCategoryController::class, 'store'])
+        ->middleware('auth:sanctum');
+    Route::put('/categories/{id}', [EventCategoryController::class, 'update'])
+        ->middleware('auth:sanctum');
+    Route::delete('/categories/{id}', [EventCategoryController::class, 'destroy'])
+        ->middleware('auth:sanctum');
+
+    // Ticket routes
+    Route::get('/my-tickets', [TicketController::class, 'userTickets'])
+        ->middleware('auth:sanctum');
+    Route::get('/my-events', [TicketController::class, 'userEvents'])
+        ->middleware('auth:sanctum');
+    Route::post('/tickets/buy', [TicketController::class, 'buy'])
+        ->middleware('auth:sanctum');
+    Route::post('/check-in', [TicketController::class, 'checkIn']);
+
+    // User routes
+    Route::post('/users', [UserController::class, 'store'])
+        ->middleware('auth:sanctum');
+    Route::get('/users', [UserController::class, 'index'])
+        ->middleware('auth:sanctum');
+    Route::put('/users/{id}', [UserController::class, 'update'])
+        ->middleware('auth:sanctum');
+    Route::delete('/users/{id}', [UserController::class, 'destroy'])
+        ->middleware('auth:sanctum');
 });
 
-Route::get('/events', [EventController::class, 'index'])->name('events.index'); // ver todos
-Route::get('/events/{id}', [EventController::class, 'show'])->name('events.show'); // ver detalles
-
-Route::middleware(['auth:sanctum', 'role:1,2'])->group(function () {
-    Route::post('/events', [EventController::class, 'store'])->name('events.store');
-    Route::put('/events/{id}', [EventController::class, 'update'])->name('events.update');
-    Route::delete('/events/{id}', [EventController::class, 'destroy'])->name('events.destroy');
-});
-
-Route::get('/events', [EventController::class, 'index'])->name('events.index');
-
-Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
-Route::middleware(['auth:sanctum', 'role:1'])->group(function () {
-    Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
-    Route::put('/categories/{id}', [CategoryController::class, 'update'])->name('categories.update');
-    Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
-});
-
-
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/my-tickets', [TicketController::class, 'userTickets'])->name('user.tickets');
-    Route::get('/my-events', [TicketController::class, 'userEvents'])->name('user.events.purchased');
-    Route::post('/tickets/buy', [TicketController::class, 'buy'])->name('tickets.buy');
-});
-
-
-Route::post('/check-in', [TicketController::class, 'checkIn'])->name('tickets.checkin');
 
