@@ -11,21 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users_sessions', function (Blueprint $table) {
+        Schema::create('event_categories_events', function (Blueprint $table) {
             $table->id();
+            $table->timestamps();
+            $table->foreignId('category_id')->constrained('event_categories');
             $table->foreignId('event_id')->constrained('events');
-            $table->string('name');
-            $table->dateTime('start_time');
-            $table->dateTime('end_time');
-            $table->string('location');
         });
     }
-    
+
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_sessions');
+        Schema::dropIfExists('event_categories_events');
     }
 };

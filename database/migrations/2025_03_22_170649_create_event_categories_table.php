@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('event_categories', function (Blueprint $table) {
             $table->id();
             $table->string('category');
+            $table->timestamp('created_at');
+            $table->timestamp('updated_at');
         });
     }
 

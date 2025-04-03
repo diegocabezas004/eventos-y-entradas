@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tickets', function (Blueprint $table) {
+        Schema::create('attendances', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('ticket_type_id')->constrained('ticket_types');
-            $table->string('ticket_unique_code')->unique();
-            $table->dateTime('purchase_date');
-            $table->boolean('checked_in')->default(false);
+            $table->foreignId('event_session_id')->constrained('event_sessions');
+            $table->foreignId('validated_by_user_id')->constrained('users');
+            $table->foreignId('attendee_id')->constrained('attendees');
+            $table->dateTime('check_in_time');
             $table->timestamp('created_at');
             $table->timestamp('updated_at');
         });
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tickets');
+        Schema::dropIfExists('attendances');
     }
 };

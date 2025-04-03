@@ -11,22 +11,23 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tickets', function (Blueprint $table) {
+        Schema::create('event_sessions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('ticket_type_id')->constrained('ticket_types');
-            $table->string('ticket_unique_code')->unique();
-            $table->dateTime('purchase_date');
-            $table->boolean('checked_in')->default(false);
+            $table->foreignId('event_id')->constrained('events');
+            $table->string('name');
+            $table->dateTime('start_time');
+            $table->dateTime('end_time');
+            $table->string('location');
             $table->timestamp('created_at');
             $table->timestamp('updated_at');
         });
     }
-
+    
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('tickets');
+        Schema::dropIfExists('event_sessions');
     }
 };

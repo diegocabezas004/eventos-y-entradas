@@ -10,6 +10,14 @@ class Ticket extends Model
     /** @use HasFactory<\Database\Factories\TicketFactory> */
     use HasFactory;
 
+    public function ticket_type(){
+        return $this->belongsTo(TicketType::class);
+    }
+
+    public function attendees(){
+        return $this->hasMany(Attendee::class);
+    }
+
     protected $fillable = [
         'ticket_type_id',
         'ticket_unique_code',
@@ -20,7 +28,8 @@ class Ticket extends Model
 
     protected function casts(): array{
         return [
-            'created_at' => 'datetime'
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime'
         ];
     }
 }

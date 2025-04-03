@@ -2,10 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\Event;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Ticket_Type>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\TicketType>
  */
 class TicketTypeFactory extends Factory
 {
@@ -20,7 +21,8 @@ class TicketTypeFactory extends Factory
         $salesEnd = fake()->dateTimeBetween($salesStart, '+6 months');
 
         return [
-            'name' => fake()->words(),
+            'name' => fake()->words(2,true),
+            'event_id' => Event::factory(),
             'price' => fake()->randomFloat(2, 10, 500),
             'quantity_available' => fake()->numberBetween(50, 1000),
             'sales_start' => $salesStart,
