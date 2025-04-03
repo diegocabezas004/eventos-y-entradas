@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\EventCategory;
 use App\Models\Organization;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -28,6 +29,7 @@ class EventFactory extends Factory
             'location' => fake()->address(),
             'capacity' => fake()->numberBetween(50, 2000),
             'organization_id' => Organization::factory(),
+            'category_id' => EventCategory::factory(),
         ];
     }
 }

@@ -13,15 +13,17 @@ return new class extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('organization_id')->constrained('organizations');
             $table->string('name');
-            $table->dateTime('start_date');
-            $table->dateTime('end_date');
+            $table->text('description')->nullable();
+            $table->date('start_date');
+            $table->date('end_date');
             $table->string('location');
-            $table->integer('capacity');
-            $table->timestamp('created_at');
-            $table->timestamp('updated_at');
+            $table->integer('capacity');    
+            $table->foreignId('organization_id')->constrained('organizations');
+            $table->foreignId('category_id')->constrained('event_categories');
+            $table->timestamps();
         });
+        
     }
 
     /**

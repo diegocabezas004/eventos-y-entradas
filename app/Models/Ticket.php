@@ -23,7 +23,6 @@ class Ticket extends Model
         'ticket_unique_code',
         'purchase_date',
         'checked_in',
-        'attendee_id',
     ];
 
     protected function casts(): array{

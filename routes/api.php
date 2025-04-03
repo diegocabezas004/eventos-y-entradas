@@ -8,50 +8,57 @@ use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
+// Ruta base para obtener el usuario autenticado (fuera del prefijo)
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
-})->middleware('auth:sanctum');
-
-Route::post('/register', [AuthController::class, 'register'])->name('register');
-Route::post('/login', [AuthController::class, 'login'])->name('login');
-Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum')->name('logout');
-
-Route::middleware(['auth:sanctum', 'role:1'])->group(function () {
-    Route::post('/users', [UserController::class, 'store'])->name('users.store');
-    Route::get('/users', [UserController::class, 'index'])->name('users.index');
-    Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
-    Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
 });
 
-// Rutas públicas o para todos los roles autenticados
-Route::get('/events', [EventController::class, 'index'])->name('events.index'); // ver todos
-Route::get('/events/{id}', [EventController::class, 'show'])->name('events.show'); // ver detalles
+Route::prefix('api/v1')->group(function () {
+    // Autenticación
+    Route::post('/register', [AuthController::class, 'register'])->name('api.register');
+    Route::post('/login', [AuthController::class, 'login'])->name('api.login');
+    Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum')->name('api.logout');
 
-// Gestión de eventos (Admin de organización y Admin general)
-Route::middleware(['auth:sanctum', 'role:1,2'])->group(function () {
-    Route::post('/events', [EventController::class, 'store'])->name('events.store');
-    Route::put('/events/{id}', [EventController::class, 'update'])->name('events.update');
-    Route::delete('/events/{id}', [EventController::class, 'destroy'])->name('events.destroy');
+    // Eventos públicos
+    Route::get('/events', [EventController::class, 'index'])->name('api.events.index');
+    Route::get('/events/{id}', [EventController::class, 'show'])->name('api.events.show');
+
+    // Gestión de eventos (solo autenticados)
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('/events', [EventController::class, 'store'])->name('api.events.store');
+        Route::put('/events/{id}', [EventController::class, 'update'])->name('api.events.update');
+        Route::delete('/events/{id}', [EventController::class, 'destroy'])->name('api.events.destroy');
+    });
+
+    // Categorías
+    Route::get('/categories', [EventCategoryController::class, 'index'])->name('api.categories.index');
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('/categories', [EventCategoryController::class, 'store'])->name('api.categories.store');
+        Route::put('/categories/{id}', [EventCategoryController::class, 'update'])->name('api.categories.update');
+        Route::delete('/categories/{id}', [EventCategoryController::class, 'destroy'])->name('api.categories.destroy');
+    });
+
+    // Gestión de usuarios (admin)
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('/users', [UserController::class, 'store'])->name('api.users.store');
+        Route::get('/users', [UserController::class, 'index'])->name('api.users.index');
+        Route::put('/users/{id}', [UserController::class, 'update'])->name('api.users.update');
+        Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('api.users.destroy');
+    });
+
+    // Tickets (compra y consulta)
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('/tickets/buy', [TicketController::class, 'buy'])->name('api.tickets.buy');
+        Route::get('/my-tickets', [TicketController::class, 'userTickets'])->name('api.user.tickets');
+        Route::get('/my-events', [TicketController::class, 'userEvents'])->name('api.user.events');
+    });
+
+    // Ruta para obtener los eventos comprados por el usuario
+    Route::middleware('auth:sanctum')->get('/user/events/purchased', [UserController::class, 'purchasedEvents'])->name('user.events.purchased');
+
+    // Check-in (puede estar sin auth dependiendo del uso)
+    Route::post('/check-in', [TicketController::class, 'checkIn'])->name('api.tickets.checkin');
+
+    // Ruta directa a crear tickets para algunas pruebas sin auth
+    Route::post('/tickets', [TicketController::class, 'store']); // opcional
 });
-
-// Ejemplo de filtrado por query params: /api/events?category_id=2&start_date=2024-04-01&end_date=2024-04-10
-Route::get('/events', [EventController::class, 'index'])->name('events.index');
-
-Route::get('/categories', [EventCategoryController::class, 'index'])->name('categories.index');
-Route::middleware(['auth:sanctum', 'role:1'])->group(function () {
-    Route::post('/categories', [EventCategoryController::class, 'store'])->name('categories.store');
-    Route::put('/categories/{id}', [EventCategoryController::class, 'update'])->name('categories.update');
-    Route::delete('/categories/{id}', [EventCategoryController::class, 'destroy'])->name('categories.destroy');
-});
-
-
-// Comprar/ver tickets del usuario autenticado
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/my-tickets', [TicketController::class, 'userTickets'])->name('user.tickets');
-    Route::get('/my-events', [TicketController::class, 'userEvents'])->name('user.events.purchased');
-    Route::post('/tickets/buy', [TicketController::class, 'buy'])->name('tickets.buy');
-});
-
-
-Route::post('/check-in', [TicketController::class, 'checkIn'])->name('tickets.checkin');
-

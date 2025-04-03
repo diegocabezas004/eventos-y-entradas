@@ -7,14 +7,26 @@ use Illuminate\Http\Request;
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
+
+    use AuthorizesRequests;
+
     public function index(Request $request)
     {
         $query = Event::query();
 
+        $user = $request->user();
+
+        // Si el usuario es admin de organización, solo puede ver sus propios eventos
+        if ($user && $user->role_id == 2) {
+            $query->where('organization_id', $user->organization_id);
+        }
+
+        // Filtros adicionales si vienen del frontend
         if ($request->has('category_id')) {
             $query->where('category_id', $request->category_id);
         }
@@ -26,13 +38,19 @@ class EventController extends Controller
         return response()->json($query->get());
     }
 
+
+
+
     public function show($id)
     {
         return response()->json(Event::findOrFail($id));
     }
 
+
     public function store(Request $request)
     {
+        $this->authorize('create', Event::class);
+
         $validated = $request->validate([
             'name' => 'required|string',
             'description' => 'nullable|string',
@@ -40,7 +58,7 @@ class EventController extends Controller
             'end_date' => 'required|date|after_or_equal:start_date',
             'location' => 'required|string',
             'capacity' => 'required|integer',
-            'category_id' => 'required|exists:categories,id',
+            'category_id' => 'required|exists:event_categories,id',
             'organization_id' => 'required|exists:organizations,id',
         ]);
 
