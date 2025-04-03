@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Event;
-use App\Models\Event_Category;
+use App\Models\EventCategory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -13,8 +13,8 @@ class FilterEventsTest extends TestCase
 
     public function test_it_filters_events_by_category()
     {
-        $music = Event_Category::factory()->create(['name' => 'Music']);
-        $tech = Event_Category::factory()->create(['name' => 'Technology']);
+        $music = EventCategory::factory()->create(['name' => 'Music']);
+        $tech = EventCategory::factory()->create(['name' => 'Technology']);
 
         Event::factory()->create(['name' => 'Concert', 'category_id' => $music->id]);
         Event::factory()->create(['name' => 'Hackathon', 'category_id' => $tech->id]);

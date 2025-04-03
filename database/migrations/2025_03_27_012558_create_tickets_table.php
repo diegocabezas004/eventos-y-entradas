@@ -13,12 +13,16 @@ return new class extends Migration
     {
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('ticket_type_id')->constrained('ticket_types');
-            $table->string('ticket_unique_code')->unique();
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('event_id');
+            $table->unsignedBigInteger('ticket_type_id');
+            $table->string('ticket_unique_code');
             $table->dateTime('purchase_date');
             $table->boolean('checked_in')->default(false);
-            $table->timestamp('created_at');
-            $table->timestamp('updated_at');
+            $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('event_id')->references('id')->on('events')->onDelete('cascade');
+            $table->foreign('ticket_type_id')->references('id')->on('ticket_types')->onDelete('cascade');
         });
     }
 
