@@ -2,10 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\Event;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Event_Session>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\EventSession>
  */
 class EventSessionFactory extends Factory
 {
@@ -22,10 +23,10 @@ class EventSessionFactory extends Factory
 
         return [
             'name' => fake() -> sentence(3),
+            'event_id' => Event::factory(),
             'start_time' => $startTime,
             'end_time' => $endTime,
             'location' => fake() -> streetAddress(),
- 
          ];
     }
 }

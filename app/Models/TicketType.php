@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Ticket_Type extends Model
+class TicketType extends Model
 {
     /** @use HasFactory<\Database\Factories\TicketTypeFactory> */
     use HasFactory;
@@ -22,4 +22,12 @@ class Ticket_Type extends Model
         'sales_start',
         'sales_end'
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
+        ];
+    }
 }

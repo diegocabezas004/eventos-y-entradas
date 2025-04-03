@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('email');
             $table->string('phone');
             $table->date('registration_date');
+            $table->timestamp('created_at');
+            $table->timestamp('updated_at');
         });
     }
 

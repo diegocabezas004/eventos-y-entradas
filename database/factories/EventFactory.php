@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Organization;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -26,6 +27,7 @@ class EventFactory extends Factory
             'end_date' => $endDate,
             'location' => fake()->address(),
             'capacity' => fake()->numberBetween(50, 2000),
+            'organization_id' => Organization::factory(),
         ];
     }
 }

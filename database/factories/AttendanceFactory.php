@@ -2,6 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Attendee;
+use App\Models\EventSession;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,6 +21,9 @@ class AttendanceFactory extends Factory
     {
         return [
             'check_in_time' => fake()->dateTimeThisYear(),
+            'event_session_id' => EventSession::factory(),
+            'validated_by_user_id' => User::factory(),
+            'attendee_id' => Attendee::factory(),
         ];
     }
 }

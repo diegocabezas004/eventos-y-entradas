@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Event_Session extends Model
+class EventSession extends Model
 {
     /** @use HasFactory<\Database\Factories\SessionFactory> */
     use HasFactory;
@@ -15,12 +15,19 @@ class Event_Session extends Model
     }
 
     protected $fillable = [
-
         'event_id',
         'name',
         'location',
         'start_time',
         'end_time',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
+        ];
+    }
 
 }

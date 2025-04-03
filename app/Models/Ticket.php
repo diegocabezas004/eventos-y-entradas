@@ -11,7 +11,7 @@ class Ticket extends Model
     use HasFactory;
 
     public function ticket_type(){
-        return $this->belongsTo(Ticket_Type::class);
+        return $this->belongsTo(TicketType::class);
     }
 
     public function attendees(){
@@ -28,7 +28,8 @@ class Ticket extends Model
 
     protected function casts(): array{
         return [
-            'created_at' => 'datetime'
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime'
         ];
     }
 }
