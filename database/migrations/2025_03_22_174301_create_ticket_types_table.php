@@ -18,6 +18,8 @@ return new class extends Migration
             $table->integer('quantity_available');
             $table->dateTime('sales_start');
             $table->dateTime('sales_end');
+            $table->timestamp('created_at');
+            $table->timestamp('updated_at');
         });
     }
 

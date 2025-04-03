@@ -17,6 +17,8 @@ return new class extends Migration
             $table->foreignId('validated_by_user_id')->constrained('users');
             $table->foreignId('attendee_id')->constrained('attendees');
             $table->dateTime('check_in_time');
+            $table->timestamp('created_at');
+            $table->timestamp('updated_at');
         });
     }
 

@@ -17,4 +17,12 @@ class Role extends Model
     protected $fillable = [
         'type'
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
+        ];
+    }
 }

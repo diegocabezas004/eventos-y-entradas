@@ -28,6 +28,8 @@ class Attendance extends Model
     {
         return [
             'check_in_time' => 'datetime',
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
         ];
     }
 }

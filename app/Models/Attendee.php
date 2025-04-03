@@ -24,13 +24,19 @@ class Attendee extends Model
         return $this->belongsTo(Ticket::class);
     }
 
-
-
-
     protected $fillable = [
         'full_name',
         'email',
         'phone',
         'registration_date'
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
+        ];
+    }
+    
 }

@@ -18,6 +18,8 @@ return new class extends Migration
             $table->dateTime('start_time');
             $table->dateTime('end_time');
             $table->string('location');
+            $table->timestamp('created_at');
+            $table->timestamp('updated_at');
         });
     }
     

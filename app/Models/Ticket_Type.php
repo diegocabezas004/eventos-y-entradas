@@ -22,4 +22,12 @@ class Ticket_Type extends Model
         'sales_start',
         'sales_end'
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
+        ];
+    }
 }

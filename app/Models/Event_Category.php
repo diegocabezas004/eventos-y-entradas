@@ -12,4 +12,12 @@ class Event_Category extends Model
         protected $fillable = [
         'category'
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
+        ];
+    }
 }

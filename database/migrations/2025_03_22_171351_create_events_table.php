@@ -19,6 +19,8 @@ return new class extends Migration
             $table->dateTime('end_date');
             $table->string('location');
             $table->integer('capacity');
+            $table->timestamp('created_at');
+            $table->timestamp('updated_at');
         });
     }
 

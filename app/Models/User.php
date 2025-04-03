@@ -22,7 +22,7 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
-    public function organizations(){
+    public function organization(){
         return $this->belongsTo(Organization::class);
     }
 

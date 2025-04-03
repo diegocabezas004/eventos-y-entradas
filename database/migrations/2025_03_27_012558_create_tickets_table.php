@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('ticket_unique_code')->unique();
             $table->dateTime('purchase_date');
             $table->boolean('checked_in')->default(false);
+            $table->timestamp('created_at');
+            $table->timestamp('updated_at');
         });
     }
 
