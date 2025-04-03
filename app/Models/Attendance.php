@@ -19,7 +19,7 @@ class Attendance extends Model
     }
 
     protected $fillable = [
-        'session_id',
+        'event_session_id',
         'attendee_id',
         'validated_by_user_id',
     ];

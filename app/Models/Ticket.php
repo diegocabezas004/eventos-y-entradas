@@ -11,7 +11,7 @@ class Ticket extends Model
     use HasFactory;
 
     public function ticket_type(){
-        return $this->belongsTo(Ticket_Type::class);
+        return $this->belongsTo(TicketType::class);
     }
 
     public function attendees(){

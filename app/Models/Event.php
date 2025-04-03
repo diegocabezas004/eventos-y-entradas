@@ -13,16 +13,16 @@ class Event extends Model
 
     public function event_categories(): BelongsToMany 
     {
-        return $this->belongsToMany(Event_Category::class);
+        return $this->belongsToMany(EventCategory::class);
     }
     
     public function ticket_types(): BelongsToMany
     {
-        return $this->belongsToMany(Ticket_Type::class);
+        return $this->belongsToMany(TicketType::class);
     }
 
     public function sessions(){
-        return $this->hasMany(Event_Session::class);
+        return $this->hasMany(EventSession::class);
     }
 
     protected $fillable = [
