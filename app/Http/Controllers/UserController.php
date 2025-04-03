@@ -23,7 +23,7 @@ class UserController extends Controller
         ]);
 
         $validated['password'] = bcrypt($validated['password']);
-        $user = UserController::create($validated);
+        $user = User::create($validated);
 
         return response()->json($user, 201);
     }

@@ -1,5 +1,10 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EventCategoryController;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\TicketController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -32,11 +37,11 @@ Route::middleware(['auth:sanctum', 'role:1,2'])->group(function () {
 // Ejemplo de filtrado por query params: /api/events?category_id=2&start_date=2024-04-01&end_date=2024-04-10
 Route::get('/events', [EventController::class, 'index'])->name('events.index');
 
-Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+Route::get('/categories', [EventCategoryController::class, 'index'])->name('categories.index');
 Route::middleware(['auth:sanctum', 'role:1'])->group(function () {
-    Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
-    Route::put('/categories/{id}', [CategoryController::class, 'update'])->name('categories.update');
-    Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+    Route::post('/categories', [EventCategoryController::class, 'store'])->name('categories.store');
+    Route::put('/categories/{id}', [EventCategoryController::class, 'update'])->name('categories.update');
+    Route::delete('/categories/{id}', [EventCategoryController::class, 'destroy'])->name('categories.destroy');
 });
 
 
