@@ -27,9 +27,9 @@ class EventPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function create(User $user)
     {
-        return $user->role->type !== 'assistant'; // o el id del rol si lo usas así
+        return $user->role && $user->role->type === 'admin';  // Asegúrate de que `role` no sea `null`
     }
 
     /**

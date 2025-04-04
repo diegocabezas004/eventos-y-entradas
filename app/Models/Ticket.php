@@ -18,6 +18,11 @@ class Ticket extends Model
         return $this->hasMany(Attendee::class);
     }
 
+    public function event()
+    {
+        return $this->belongsTo(Event::class);
+    }
+
     protected $fillable = [
         'ticket_type_id',
         'ticket_unique_code',

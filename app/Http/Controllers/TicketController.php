@@ -3,25 +3,37 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
-namespace App\Http\Controllers;
-
 use App\Models\Event;
 use App\Models\Ticket;
-use Illuminate\Http\Request;
 
 class TicketController extends Controller
 {
+    // Obtener los eventos comprados por el usuario autenticado
+    public function getPurchasedEvents(Request $request)
+    {
+        // Obtener el usuario autenticado
+        $user = $request->user();
+
+        // Obtener los tickets comprados por el usuario
+        $tickets = Ticket::where('user_id', $user->id)->with('event')->get();
+
+        // Devolver los eventos asociados a esos tickets
+        return response()->json($tickets->pluck('event'));
+    }
+
+    // Obtener los tickets del usuario autenticado
     public function userTickets()
     {
         return auth()->user()->tickets;
     }
 
+    // Obtener los eventos asociados a los tickets del usuario autenticado
     public function userEvents()
     {
         return auth()->user()->tickets()->with('event')->get()->pluck('event');
     }
 
+    // Comprar un ticket
     public function buy(Request $request)
     {
         $validated = $request->validate([
@@ -39,6 +51,7 @@ class TicketController extends Controller
         return response()->json($ticket, 201);
     }
 
+    // Check-in de un ticket
     public function checkIn(Request $request)
     {
         $validated = $request->validate([
@@ -61,4 +74,3 @@ class TicketController extends Controller
         return response()->json(['message' => 'Check-in successful']);
     }
 }
-

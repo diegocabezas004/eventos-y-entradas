@@ -13,8 +13,8 @@ class FilterEventsTest extends TestCase
 
     public function test_it_filters_events_by_category()
     {
-        $music = EventCategory::factory()->create(['name' => 'Music']);
-        $tech = EventCategory::factory()->create(['name' => 'Technology']);
+        $music = EventCategory::factory()->create(['category' => 'Music']);
+        $tech = EventCategory::factory()->create(['category' => 'Technology']);
 
         Event::factory()->create(['name' => 'Concert', 'category_id' => $music->id]);
         Event::factory()->create(['name' => 'Hackathon', 'category_id' => $tech->id]);

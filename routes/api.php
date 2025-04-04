@@ -16,7 +16,7 @@ Route::prefix('v1')->group(function () {
         ->middleware('auth:sanctum');
 
     // Event routes
-    Route::get('/events', [EventController::class, 'index']);
+    Route::middleware('auth:sanctum')->get('/events', [EventController::class, 'index'])->name('events.index');
     Route::get('/events/{id}', [EventController::class, 'show']);
     Route::post('/events', [EventController::class, 'store'])
         ->middleware('auth:sanctum');
@@ -43,9 +43,12 @@ Route::prefix('v1')->group(function () {
         ->middleware('auth:sanctum');
     Route::post('/check-in', [TicketController::class, 'checkIn']);
 
+    // Route to get purchased events for the authenticated user
+    Route::middleware('auth:sanctum')->get('/user/events/purchased', [TicketController::class, 'getPurchasedEvents'])->name('user.events.purchased');
+
     // User routes
     Route::post('/users', [UserController::class, 'store'])
-        ->middleware('auth:sanctum');
+        ->middleware('auth:sanctum')->name('users.store');
     Route::get('/users', [UserController::class, 'index'])
         ->middleware('auth:sanctum');
     Route::put('/users/{id}', [UserController::class, 'update'])
@@ -53,5 +56,4 @@ Route::prefix('v1')->group(function () {
     Route::delete('/users/{id}', [UserController::class, 'destroy'])
         ->middleware('auth:sanctum');
 });
-
 

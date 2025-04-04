@@ -3,6 +3,7 @@
 namespace Tests\Feature\Events;
 
 use App\Models\User;
+use App\Models\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Laravel\Sanctum\Sanctum;
@@ -12,19 +13,31 @@ class CreateEventTest extends TestCase
     use RefreshDatabase;
 
     public function test_it_can_create_an_event_successfully()
-    {
-        Sanctum::actingAs(User::factory()->create());
+{
+    // Crear un usuario con un rol adecuado (por ejemplo, 'admin')
+    $adminRole = Role::create(['type' => 'admin']);  // Crear el rol 'admin'
+    
+    $user = User::factory()->create([
+        'role_id' => $adminRole->id,  // Asignar el rol 'admin'
+    ]);
 
-        $payload = [
-            'organization_id' => '1',
-            'name' => 'Titulo',
-            'start_date' => '28/09/2025',
-            'end_date' => '30/09/2025',
-            'location' => 'Sivar',
-            'capacity' => '2000',
-        ];
+    // Autenticar al usuario con Sanctum
+    Sanctum::actingAs($user);
 
-        $response = $this->postJson('/api/v1/events', $payload);
-        $response->assertStatus(201);
-    }
+    $payload = [
+        'organization_id' => '1',
+        'name' => 'Titulo',
+        'start_date' => '2025-09-28',
+        'end_date' => '2025-09-30',
+        'location' => 'Sivar',
+        'capacity' => '2000',
+    ];
+
+    // Enviar la solicitud para crear el evento
+    $response = $this->postJson('/api/v1/events', $payload);
+
+    // Asegurarse de que la respuesta tenga el código de estado 201 (creado exitosamente)
+    $response->assertStatus(201);
+}
+
 }

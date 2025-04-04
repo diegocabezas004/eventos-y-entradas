@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Models\EventCategory;
 use App\Models\User;
 use App\Models\Event;
 use App\Models\Ticket;

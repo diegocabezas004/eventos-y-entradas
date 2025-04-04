@@ -17,25 +17,9 @@ class EventController extends Controller
 
     public function index(Request $request)
     {
-        $query = Event::query();
-
         $user = $request->user();
-
-        // Si el usuario es admin de organización, solo puede ver sus propios eventos
-        if ($user && $user->role_id == 2) {
-            $query->where('organization_id', $user->organization_id);
-        }
-
-        // Filtros adicionales si vienen del frontend
-        if ($request->has('category_id')) {
-            $query->where('category_id', $request->category_id);
-        }
-
-        if ($request->has(['start_date', 'end_date'])) {
-            $query->whereBetween('start_date', [$request->start_date, $request->end_date]);
-        }
-
-        return response()->json($query->get());
+        $events = Event::where('organization_id', $user->organization_id)->get();
+        return response()->json($events);
     }
 
 
@@ -48,24 +32,20 @@ class EventController extends Controller
 
 
     public function store(Request $request)
-    {
-        $this->authorize('create', Event::class);
+{
+    $this->authorize('create', Event::class);
+    $event = Event::create([
+        'name' => $request->name,
+        'start_date' => $request->start_date,
+        'end_date' => $request->end_date,
+        'location' => $request->location,
+        'capacity' => $request->capacity,
+        'organization_id' => $request->organization_id,
+    ]);
 
-        $validated = $request->validate([
-            'name' => 'required|string',
-            'description' => 'nullable|string',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-            'location' => 'required|string',
-            'capacity' => 'required|integer',
-            'category_id' => 'required|exists:event_categories,id',
-            'organization_id' => 'required|exists:organizations,id',
-        ]);
+    return response()->json($event, 201);
+}
 
-        $event = Event::create($validated);
-
-        return response()->json($event, 201);
-    }
 
     public function update(Request $request, $id)
     {
