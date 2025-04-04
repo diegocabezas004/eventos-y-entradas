@@ -29,7 +29,7 @@ class EventPolicy
      */
     public function create(User $user): bool
     {
-        return $user->role->type !== 'assistant'; // o el id del rol si lo usas así
+        return $user->role && $user->role->type !== 'assistant';
     }
 
     /**

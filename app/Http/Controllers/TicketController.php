@@ -33,7 +33,7 @@ class TicketController extends Controller
             'user_id' => auth()->id(),
             'event_id' => $validated['event_id'],
             'quantity' => $validated['quantity'],
-            'code' => strtoupper(\Str::random(6)),
+            'ticket_unique_code' => strtoupper(\Str::random(6)),
         ]);
 
         return response()->json($ticket, 201);
@@ -42,20 +42,20 @@ class TicketController extends Controller
     public function checkIn(Request $request)
     {
         $validated = $request->validate([
-            'code' => 'required|string',
+            'ticket_unique_code' => 'required|string',
         ]);
 
-        $ticket = Ticket::where('code', $validated['code'])->first();
+        $ticket = Ticket::where('ticket_unique_code', $validated['ticket_unique_code'])->first();
 
         if (!$ticket) {
             return response()->json(['message' => 'Ticket not found'], 404);
         }
 
-        if ($ticket->checked_in_at) {
+        if ($ticket->checked_in) {
             return response()->json(['message' => 'Ticket already used'], 400);
         }
 
-        $ticket->checked_in_at = now();
+        $ticket->checked_in = true;
         $ticket->save();
 
         return response()->json(['message' => 'Check-in successful']);
