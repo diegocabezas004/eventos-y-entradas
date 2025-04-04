@@ -29,7 +29,7 @@ class EventPolicy
      */
     public function create(User $user)
     {
-        return $user->role && $user->role->type === 'admin';  // Asegúrate de que `role` no sea `null`
+        return $user->role && $user->role->type !== 'assistant';
     }
 
     /**

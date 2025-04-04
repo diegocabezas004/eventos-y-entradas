@@ -20,14 +20,14 @@ class TicketCheckInTest extends TestCase
         $ticket = Ticket::factory()->create([
             'user_id' => $user->id,
             'event_id' => $event->id,
-            'code' => 'ABC123',
-            'checked_in_at' => null,
+            'ticket_unique_code' => 'ABC123',
+            'checked_in' => false,
         ]);
 
-        $response = $this->postJson('/api/check-in', [
-            'code' => 'ABC123',
+        $response = $this->postJson('/api/v1/check-in', [
+            'ticket_unique_code' => 'ABC123',
         ]);
-
+        
         $response->assertStatus(200);
         $response->assertJson([
             'message' => 'Check-in successful',
@@ -35,7 +35,7 @@ class TicketCheckInTest extends TestCase
 
         $this->assertDatabaseHas('tickets', [
             'id' => $ticket->id,
-            'checked_in_at' => now(),
+            'checked_in' => true,
         ]);
     }
 
@@ -47,12 +47,12 @@ public function test_it_prevents_check_in_if_ticket_already_used()
     $ticket = Ticket::factory()->create([
         'user_id' => $user->id,
         'event_id' => $event->id,
-        'code' => 'USED123',
-        'checked_in_at' => now(),
+        'ticket_unique_code' => 'USED123',
+        'checked_in' => true,
     ]);
 
-    $response = $this->postJson('/api/check-in', [
-        'code' => 'USED123',
+    $response = $this->postJson('/api/v1/check-in', [
+        'ticket_unique_code' => 'USED123',
     ]);
 
     $response->assertStatus(400);
