@@ -51,10 +51,7 @@ Route::prefix('v1')->group(function () {
     Route::post('/tickets/buy', [TicketController::class, 'buy'])
         ->middleware('auth:sanctum')
         ->name('tickets.buy');
-    Route::post('/check-in', [TicketController::class, 'checkIn'])->name('api.checkin');
-
-    // Route to get purchased events for the authenticated user
-    Route::middleware('auth:sanctum')->get('/user/events/purchased', [TicketController::class, 'getPurchasedEvents'])->name('user.events.purchased');
+    Route::post('/check-in', [TicketController::class, 'checkIn'])->name('tickets.checkIn');
 
     // User routes
     Route::post('/users', [UserController::class, 'store'])

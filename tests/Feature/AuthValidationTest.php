@@ -11,7 +11,7 @@ class AuthValidationTest extends TestCase
 
     public function test_registration_fails_if_required_fields_are_missing()
     {
-        $response = $this->postJson(route('register'), []);
+        $response = $this->postJson(route('api.register'), []);
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors([
@@ -26,7 +26,7 @@ class AuthValidationTest extends TestCase
 
     public function test_login_fails_if_required_fields_are_missing()
     {
-        $response = $this->postJson(route('login'), []);
+        $response = $this->postJson(route('api.login'), []);
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors(['email', 'password']);

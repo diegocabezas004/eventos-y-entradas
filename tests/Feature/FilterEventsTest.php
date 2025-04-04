@@ -16,14 +16,14 @@ class FilterEventsTest extends TestCase
         $music = EventCategory::factory()->create(['category' => 'Music']);
         $tech = EventCategory::factory()->create(['category' => 'Technology']);
 
-        Event::factory()->create(['name' => 'Concert', 'category_id' => $music->id]);
-        Event::factory()->create(['name' => 'Hackathon', 'category_id' => $tech->id]);
+        Event::factory()->create(['category' => 'Concert', 'category_id' => $music->id]);
+        Event::factory()->create(['category' => 'Hackathon', 'category_id' => $tech->id]);
 
-        $response = $this->getJson('/api/events?category_id=' . $tech->id);
+        $response = $this->getJson(uri: 'events.show?category_id=' . $tech->id);
 
         $response->assertStatus(200);
-        $response->assertJsonFragment(['name' => 'Hackathon']);
-        $response->assertJsonMissing(['name' => 'Concert']);
+        $response->assertJsonFragment(['category' => 'Hackathon']);
+        $response->assertJsonMissing(['category' => 'Concert']);
     }
 
     /** @test */
@@ -47,7 +47,7 @@ class FilterEventsTest extends TestCase
             'end_date' => now()->addDays(6),
         ]);
 
-        $response = $this->getJson('/api/events?start_date=' . now()->format('Y-m-d') . '&end_date=' . now()->addDay()->format('Y-m-d'));
+        $response = $this->getJson('events.index?start_date=' . now()->format('Y-m-d') . '&end_date=' . now()->addDay()->format('Y-m-d'));
 
         $response->assertStatus(200);
         $response->assertJsonFragment(['name' => 'Past Event']);
